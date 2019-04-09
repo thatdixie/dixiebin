@@ -1,0 +1,8 @@
+#!/bin/bash
+######################################################
+# does 'git status -uno'
+# so, I don't have to look at untracked symlinks  
+######################################################
+#
+git status -uno
+

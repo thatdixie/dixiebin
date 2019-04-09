@@ -1,0 +1,27 @@
+#!/bin/sh
+######################################################
+# This is a generic script to build a CGI app that
+# links libdixie.a
+#
+# usage:
+# build_cgi <output_file> <input_file>...<input_file>
+#
+# assumes symlink to target in docroot named "web"
+######################################################
+#
+outfile=$1
+infiles=""
+shift
+while [ "$#" -gt "0" ]
+do
+    infiles="$infiles $1"
+    shift
+done 
+
+build_dir
+if g++ $infiles -I$HOME/include -I. -L$HOME/lib -ldixie -o $outfile; then
+    echo "Build complete -- run ./"$outfile" to verify"
+    cp $outfile web
+else
+    echo "***ERROR compiling $infiles"
+fi

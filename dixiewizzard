@@ -1,0 +1,149 @@
+#!/bin/sh
+######################################
+# Dixie application wizzard creates
+# .cpp and .h stubs for a Dixiemenu
+# or CGIDiaper app
+#######################################
+#
+
+########################################################
+# get name of app and check for existance already there
+########################################################
+echo "what is the name of this app?"
+read appname
+yorn=""
+if [ -f "$appname.cpp" ]; then
+    while [ "$yorn" != "y" -a "$yorn" != "n" ] 
+    do
+        echo "$appname.cpp is already present. do you want to overwrite it?(y/n)"
+        read yorn
+    done    
+    if [ "$yorn" = "n" ]; then
+        exit
+    fi
+fi
+cpp="$appname.cpp"
+h="$appname.h"
+
+########################################################
+# determine if this is a DixieMenu or CGI
+########################################################
+yorn=""
+while [ "$yorn" != "y" -a "$yorn" != "n" ] 
+do
+    echo "Will this be a CGI app?(y/n)"
+    read yorn 
+done
+if [ "$yorn" = "y" ]; then
+    echo "This is a CGI app..."
+    outfile="$appname.cgi"
+    iscgi=1
+else
+    echo "This is a dixie app..."
+    outfile="$appname"
+    iscgi=0
+fi
+
+########################################################
+# Write the stub-files .cpp and .h
+########################################################
+echo "What is the class name for app?"
+read classname
+if [ $iscgi -eq 1 ]; then
+    echo "What is the domain name for "$outfile" ?"
+    read domainname
+    echo "What is the sub directory for "$outfile" ? (say . for this one -- no /)"
+    read subdirectory
+    echo "What is full path for "$domainname" document root? (no trailing /)"
+    read fullpath
+fi
+yorn=""
+if [ $iscgi -eq 0 ]; then
+    while [ "$yorn" != "y" -a "$yorn" != "n" ] 
+    do
+        echo "Do you want to use DixieMenu?(y/n)"
+        read yorn 
+    done
+else
+    echo "creating stubs for $outfile CGI..."
+    . buildcgi_stubs
+fi
+
+if [ "$yorn" = "y" -a $iscgi -eq 0 ]; then
+    echo "creating stubs for $outfile using DixieMenu..."
+    . buildmenu_stubs
+fi
+if [ "$yorn" = "n" -a $iscgi -eq 0 ]; then
+    echo "creating stubs for $outfile without menu..."
+    . buildnomenu_stubs
+fi
+######################################################
+# Write build script and create dirictories for CGI's
+######################################################
+b="build"
+echo "creating build script..."
+if [ -f $b ]; then
+    rm $b
+fi
+if [ $iscgi -eq 1 ]; then
+
+    if [ "$subdirectory" = "." ]; then
+        cgiconf=$outfile".conf"
+    else
+        if [ ! -d $subdirectory ]; then
+            mkdir $subdirectory
+	fi
+	cgiconf="$subdirectory""/""$outfile"".conf" 
+    fi
+    if [ -f $cgiconf ]; then
+	rm $cgiconf
+    fi
+    echo "creatng "$cgiconf" "
+    echo "session_timeout=600" >> $cgiconf
+    echo "session_dir="$PWD"/sessions/" >> $cgiconf
+    echo "domain="."$domainname" >> $cgiconf
+#    echo "cookie_name=dixie-"$appname"" >> $cgiconf
+
+    if [ -d sessions ]; then
+	echo "found sessions directory"
+    else
+	mkdir sessions
+	echo "created sessions directory"
+    fi
+
+    if [ -d web ]; then
+	echo "found web directory"
+    else
+        if [ "$subdirectory" = "." ]; then
+	    webdir=$fullpath
+        else
+            webdir="$fullpath""/""$subdirectory"
+	fi
+	
+        ln -s $webdir web 
+        echo "created $webdir symlink"
+    fi
+    
+    echo "#!/bin/sh" >> $b
+    echo "################################################" >> $b
+    echo "# build $outfile using build_cgi" >> $b
+    echo "#" >> $b
+    echo "# author:  "$USER" " >> $b
+    echo "# created: "`date` >> $b
+    echo "################################################" >> $b
+    echo "#" >> $b
+    echo "build_cgi $outfile $cpp" >> $b
+else
+    echo "#!/bin/sh" >> $b
+    echo "################################################" >> $b
+    echo "# build $outfile using build_dixieapp" >> $b
+    echo "#" >> $b
+    echo "# author:  "$USER" " >> $b
+    echo "# created: "`date`  >> $b
+    echo "################################################" >> $b
+    echo "#" >> $b
+    echo "build_dixieapp $outfile $cpp" >> $b
+fi
+chmod ugo+x $b
+echo "complete! -- type ./build to build "$outfile" "
+

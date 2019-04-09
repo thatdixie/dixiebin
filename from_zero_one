@@ -1,0 +1,3 @@
+#!/bin/bash
+scp -i /home/megan/.ec2/dixie dixie@01.metaqueue.net:$1 .
+

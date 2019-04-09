@@ -1,0 +1,11 @@
+#!/usr/bin/perl
+#############################################################################
+# 'backup hunter cslab projects folder' and copy it to current directory
+#############################################################################
+#
+$today  = `date +%y%m%d`; chop($today);
+
+####### first invoke remote cslab backup
+system("hunter_backup");
+####### copy time-stamped archive to current dir 
+system("from_hunter backup/cslab_projects_$today.tar");

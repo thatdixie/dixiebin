@@ -1,0 +1,4 @@
+#!/bin/bash
+scp $1 Megan.Williams05@eniac.cs.hunter.cuny.edu:$2
+
+

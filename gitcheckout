@@ -1,0 +1,15 @@
+#!/bin/bash
+######################################################
+# Start your workday on a git respository :-)
+#
+# 1) set GIT_DIR and
+# 2) peform 'git checkout --track origin/branch'  
+#
+# usage:
+# checkout <respository> <branch>
+#
+######################################################
+#
+export GIT_DIR=$HOME/gitprojects/$1/.git/
+echo "git respository set to "$GIT_DIR
+git checkout $2

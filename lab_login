@@ -1,0 +1,22 @@
+#!/usr/bin/expect -f
+#
+##################################################
+# This is an ineractive "expect" script
+# it has its own language allowing the script 
+# to processes responses from an interactive 
+# shell during execution see manpages by typing
+# 'man expect'
+#
+# This script will log user Megan.Williams05
+# into the hunter computer lab and enter the 
+# password at the gateway login prompt
+# ..this script was made executable by typing 
+# 'chmod u+x lab_login' and resides in the 
+# /Users/dixie/bin/ directory 
+#
+##################################################
+#
+spawn ssh Megan.Williams05@eniac.cs.hunter.cuny.edu
+expect "assword:"
+send "d1xiebitch\r"
+interact

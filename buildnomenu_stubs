@@ -1,0 +1,55 @@
+#!/bin/sh
+
+    if [ -f $cpp ]; then
+        rm $cpp
+    fi
+    echo "/* " >> $cpp
+    echo "******************************************************************************************" >> $cpp
+    echo "Title:       "$cpp" " >> $cpp
+    echo "Author:      "$USER" " >> $cpp
+    echo "Created on:  "`date` >> $cpp
+    echo " " >> $cpp
+    echo "Description: Implementation file for "$classname" class. " >> $cpp
+    echo " " >> $cpp
+    echo "Modified: " >> $cpp
+    echo "--------- " >> $cpp
+    echo " " >> $cpp
+    echo "*******************************************************************************************" >> $cpp
+    echo "*/" >> $cpp
+    echo "#include \""$h"\" " >> $cpp
+    echo " " >> $cpp
+    echo "void "$classname"::start(int argc, char **argv) " >> $cpp
+    echo "{ " >> $cpp
+    echo "    print(\"Hello World!\");" >> $cpp
+    echo "}" >> $cpp
+    echo " " >> $cpp
+    echo "//-----------------------------------------------------------------" >> $cpp
+    echo "// Here's main() -- main is not part of the "$classname" class but " >> $cpp
+    echo "// main is needed to be the entry point for all running programs " >> $cpp
+    echo "// (on linux, mac osx, and  windows operating systems) " >> $cpp
+    echo "// It is for this reason main shoud be a minimal function :-)" >> $cpp
+    echo "// " >> $cpp
+    echo "// 1) Creates the object we created for our application" >> $cpp
+    echo "// 2) Invoke start() (and passing argc and argv)" >> $cpp
+    echo "// 3) return(0) -- actually main will never return and " >> $cpp
+    echo "//    one of our object's functions will perform an orderly exit :-) " >> $cpp
+    echo "//------------------------------------------------------------------" >> $cpp
+    echo "int main(int argc, char **argv)" >> $cpp
+    echo "{   " >> $cpp
+    echo "    "$classname" *main = new "$classname"();    // We use new because we want this to be allocated memory" >> $cpp
+    echo "    main->start(argc, argv);    // the object will use exit() so there's no dangling pointers " >> $cpp
+    echo "                                // to concern ourselves with :-)  " >> $cpp
+    echo "    return (0);                 // This return(0) will never happen -- it's just to make the " >> $cpp
+    echo "                                // compiler happy :-)" >> $cpp
+    echo "}" >> $cpp
+    if [ -f $h ]; then
+        rm $h
+    fi
+    echo "#include <DixieMenu.h>" >> $h
+    echo " " >> $h
+    echo "class $classname : public DixieMenu" >> $h
+    echo "{" >> $h
+    echo "    public:" >> $h
+    echo " " >> $h
+    echo "    void start(int, char **);" >> $h
+    echo "};" >> $h

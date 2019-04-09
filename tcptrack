@@ -1,0 +1,14 @@
+#!/bin/sh
+######################################
+# track tcp data on loopback circuit 
+#######################################
+#
+if [ -z $2 ]; then
+    intr="lo"
+else
+    intr="$2"
+    if [ $intr = "et0" ]; then
+	intr="enp3s0"
+    fi
+fi
+sudo tcpflow -p -c -i $intr port $1

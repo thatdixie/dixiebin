@@ -1,0 +1,19 @@
+#!/bin/bash
+######################################################
+# Start your workday on a git respository :-)
+# Use this script the FIRST time to set
+# upstream branch
+#
+# 1) set GIT_DIR and
+# 2) peform 'git checkout --track origin/branch'  
+#
+# usage:
+# checkout <respository> <branch>
+#
+######################################################
+#
+export GIT_DIR=$HOME/gitprojects/$1/.git/
+echo "git respository set to "$GIT_DIR
+git remote update
+git fetch
+git checkout -b $2 origin/$2

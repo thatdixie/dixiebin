@@ -1,0 +1,3 @@
+#!/bin/bash
+scp Megan.Williams05@eniac.cs.hunter.cuny.edu:$1 .
+

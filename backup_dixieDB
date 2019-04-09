@@ -1,0 +1,7 @@
+#!/bin/sh
+#############################################################################
+# 'backup dixieDB'
+#
+# dixie       05/25/18 Initial Creation.
+#############################################################################
+mysqldump -u dixie --password=dixiebitch --add-drop-table dixieDB > dixieDB_BACKUP.sql

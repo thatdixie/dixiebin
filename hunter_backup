@@ -1,0 +1,4 @@
+#!/bin/bash
+ssh Megan.Williams05@eniac.cs.hunter.cuny.edu 'backup_projects'
+
+

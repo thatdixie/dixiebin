@@ -1,0 +1,8 @@
+#!/usr/bin/perl
+#############################################################################
+# 'backup hunter cslab projects folder'
+#############################################################################
+$today  = `date +%y%m%d`; chop($today);
+$home   =  $ENV{'HOME'};
+system("cd");
+system("tar -cvf $home/backup/cslab_projects_$today.tar projects/");
